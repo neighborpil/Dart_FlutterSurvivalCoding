@@ -41,45 +41,170 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   var isChecked = false;
+  var _gender = Gender.MAN;
+  var _fruit = Fruit.APPLE;
+  final _valueList = ['첫째', '둘째', '셋째'];
+  var _selectedValue = '첫째';
+
+  DateTime _selectedTime;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Checkbox(
-            value: isChecked,
-            onChanged: (value) => {
-              setState(() => {
-                isChecked = value,
-                print('isChecked: $isChecked')
-              })
-            },
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Checkbox(
+                value: isChecked,
+                onChanged: (value) => {
+                  setState(
+                      () => {isChecked = value, print('isChecked: $isChecked')})
+                },
+              ),
+              SizedBox(
+                height: 100,
+              ),
+              Switch(
+                value: isChecked,
+                onChanged: (value) => {
+                  setState(() {
+                    isChecked = value;
+                  })
+                },
+              ),
+              // 라디오 버튼(버튼 영역만 터치 영역)
+              ListTile(
+                title: Text('남자'),
+                leading: Radio(
+                  value: Gender.MAN,
+                  groupValue: _gender,
+                  onChanged: (value) => {
+                    setState(() => {_gender = value})
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text('여자'),
+                leading: Radio(
+                    value: Gender.WOMAN,
+                    groupValue: _gender,
+                    onChanged: (value) => {
+                          setState(() => {_gender = value})
+                        }),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              // 라디오 버튼(가로영역 전체가 터치영역)
+              RadioListTile(
+                title: Text('사과'),
+                value: Fruit.APPLE,
+                groupValue: _fruit,
+                onChanged: (v) => {
+                  setState(() => {_fruit = v})
+                },
+              ),
+              RadioListTile(
+                title: Text('바나나'),
+                value: Fruit.BANANA,
+                groupValue: _fruit,
+                onChanged: (v) => {
+                  setState(() => {_fruit = v})
+                },
+              ),
+              RadioListTile(
+                title: Text('포도'),
+                value: Fruit.GRAPE,
+                groupValue: _fruit,
+                onChanged: (v) => {
+                  setState(() => {_fruit = v})
+                },
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              // 드랍다운버튼
+              DropdownButton(
+                value: _selectedValue,
+                items: _valueList
+                    .map((v) => DropdownMenuItem(
+                          value: v,
+                          child: Text(v),
+                        ))
+                    .toList(),
+                onChanged: (v) => _selectedValue = v,
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Center(
+                child: RaisedButton(
+                  child: Text('Show AlertDialog'),
+                  onPressed: () => showDialog(
+                    context: context,
+                    barrierDismissible: false, // 화면 바깥을 눌러도 다이얼로그창 닫히지 않음
+                    builder: (context) => AlertDialog(
+                      title: Text('제목'),
+                      content: SingleChildScrollView(
+                          child: ListBody(
+                        children: <Widget>[
+                          Text('Alert Dialog'),
+                          Text('OK 눌러 닫음')
+                        ],
+                      )),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('OK'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        FlatButton(
+                          child: Text('Cancel'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                  child: FlatButton(
+                child: Text('DatePicker'),
+                onPressed: () {
+                  Future<DateTime> selectedDate = showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2018),
+                      lastDate: DateTime(2030),
+                      builder: (context, child) => Theme(
+                            data: ThemeData.dark(),
+                            child: child,
+                          ));
+
+                  // 사용자가 날짜를 선택할때까지 블록
+                  selectedDate.then((dateTime) {
+                    setState(() {
+                      _selectedTime = dateTime;
+                    });
+                  });
+                },
+              )),
+              Text('$_selectedTime')
+            ],
           ),
-          SizedBox(
-            height: 100,
-          ),
-          Switch(
-            value: isChecked,
-              onChanged: (value) => {
-                setState(() {
-                  isChecked = value;
-                })
-              },
-          )
-        ],
-      )
-    );
+        ));
   }
 }
+
+enum Gender { MAN, WOMAN }
+
+enum Fruit { BANANA, APPLE, GRAPE }
 
 //
 //class MyHomePage extends StatelessWidget {
