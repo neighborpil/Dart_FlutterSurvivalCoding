@@ -1,8 +1,15 @@
+import 'package:ch04basicwidgets/sliverAppBarTest.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'animationContainterTest.dart';
+import 'animationTests.dart';
 
 void main() {
   runApp(MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -26,7 +33,11 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'My home'),
+      home: SliverListPage(),
+//      home: SilverPage(),
+//      home: AnimatedContainerPage(),
+//      home: HeroPage(),
+//      home: MyHomePage(title: 'My home'),
     );
   }
 }
@@ -48,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var _selectedValue = '첫째';
 
   DateTime _selectedTime;
+  String _selectedTimeOfDay;
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +207,47 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
               )),
-              Text('$_selectedTime')
+              Text('$_selectedTime'),
+              SizedBox(
+                height: 40,
+              ),
+              Center(
+                child: FlatButton(
+                  child: Text('TimePicker'),
+                  onPressed: (){
+                    Future<TimeOfDay> selectedTime = showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+                    // 사용자가 시간을 선택할 때까지 블록
+                    selectedTime.then((timeOfDay){
+                      setState(() {
+                        _selectedTimeOfDay = '${timeOfDay.hour}:${timeOfDay.minute}';
+                      });
+                    });
+                  },
+                ),
+              ),
+              Text('$_selectedTimeOfDay'),
+              SizedBox(
+                height: 40,
+              ),
+              // 이벤트 프로퍼티가 없는 위젯에 이벤트를 주기 위하여 사용, 감싸서 사용
+              GestureDetector(
+                onTap: (){
+                  print('GestureDetector 클릭!');
+                },
+                child: Text('클릭 미!'),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              // 이벤트 프로퍼티가 없는 위젯에 이벤트를 주기 위하여 사용, 감싸서 사용
+              // GestureDetector와 동일하지만 클릭시 물결이벤트 있음
+              InkWell(
+                onTap: (){
+                  print('InkWell 클릭!');
+                },
+                child: Text('클릭 미!!'),
+              ),
             ],
           ),
         ));
