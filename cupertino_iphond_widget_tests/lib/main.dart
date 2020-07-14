@@ -53,6 +53,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   var _isOn = false;
+  var _selectedPickerValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -85,42 +86,67 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               // 클릭 이벤트
               showDialog(
-                context: context,
-                builder: (context) => CupertinoAlertDialog(
-                  title: Text('경고'),
-                  content: Text('클릭해주세요'),
-                  actions: <Widget>[
-                    CupertinoDialogAction(
-                      child: Text('Cancel'),
-                      onPressed: () {
-                        Navigator.of(context).pop(); // 다이얼로그 닫기
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                )
+                  context: context,
+                  builder: (context) =>
+                      CupertinoAlertDialog(
+                        title: Text('경고'),
+                        content: Text('클릭해주세요'),
+                        actions: <Widget>[
+                          CupertinoDialogAction(
+                            child: Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // 다이얼로그 닫기
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: Text('Ok'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      )
               );
             },
           ),
           CupertinoButton(
             child: Text("쿠퍼티노 피커"),
             onPressed: () {
-              showCupertinoModalPopup(
-                context: context,
-                builder: (context) => Container(
-                  height: ,
-
-                )
-              );
+              _showCupertinoPicker();
             },
-          )
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Text('$_selectedPickerValue')
         ],
-      )
+      ),
     );
+  }
+
+  _showCupertinoPicker() async {
+    // 0부터 9까지 숫자 리스트 생성
+    final _items = List.generate(10, (i) => i);
+    var result = _items[0];
+
+    await showCupertinoModalPopup(
+        context: context,
+        builder: (context) =>
+            Container(
+              height: 200.0, // 피커의 높이
+              child: CupertinoPicker(
+                children: _items.map((e) => Text('No. $e')).toList(),
+                itemExtent: 50.0, // 아이템 한개의 높이는 50,
+                onSelectedItemChanged: (value) {
+                  result = _items[value];
+
+                  setState(() {
+                    _selectedPickerValue = result;
+                  });
+                },
+              ),
+            )
+    );
+    print(result);
   }
 }
