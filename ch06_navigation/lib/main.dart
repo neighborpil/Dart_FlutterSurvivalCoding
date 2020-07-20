@@ -1,4 +1,5 @@
-import 'package:ch06navigation/c6p14_moveToNewPageWithParmeters.dart';
+import 'package:ch06navigation/c6p1_4_moveToNewPageWithParmeters.dart';
+import 'package:ch06navigation/ch6_p3_2_MovementOfStatefullWidgetClass.dart';
 import 'package:flutter/material.dart';
 
 import 'c6p1_moveToNewPage.dart';
@@ -30,11 +31,16 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FirstPage3(),
-      routes: {
-        '/first': (context) => FirstPage3(),
-        '/second': (context) => SecondPage3()
-      },
+      home: FirstStatefulPage(),
+//      routes: {
+//        '/first': (context) => FirstStatefulPage(),
+//        '/second': (context) => SecondStatefulPage()
+//      },
+//      home: FirstPage3(),
+//      routes: {
+//        '/first': (context) => FirstPage3(),
+//        '/second': (context) => SecondPage3()
+//      },
 
 //      home: FirstPage2(), // 첫 페이지를 시작 페이지로 설정
       // home: FirstPage(), // 첫 페이지를 시작 페이지로 설정
