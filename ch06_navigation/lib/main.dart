@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'c6p1_moveToNewPage.dart';
 import 'c6p2_navigationUsingRoute.dart';
+import 'ch6_3_3_initState_dispose.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,11 +32,8 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FirstStatefulPage(),
-//      routes: {
-//        '/first': (context) => FirstStatefulPage(),
-//        '/second': (context) => SecondStatefulPage()
-//      },
+      home: FirstStatefulPage4(),
+//      home: FirstStatefulPage(),
 //      home: FirstPage3(),
 //      routes: {
 //        '/first': (context) => FirstPage3(),
