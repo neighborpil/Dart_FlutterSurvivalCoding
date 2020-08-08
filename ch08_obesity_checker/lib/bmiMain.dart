@@ -1,3 +1,4 @@
+import 'package:ch08obesitychecker/bmiResult.dart';
 import 'package:flutter/material.dart';
 
 class BmiMain extends StatefulWidget {
@@ -6,6 +7,9 @@ class BmiMain extends StatefulWidget {
 }
 
 class _BmiMainState extends State<BmiMain> {
+
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -27,6 +31,13 @@ class _BmiMainState extends State<BmiMain> {
                   hintText: '키',
                 ),
                 keyboardType: TextInputType.number, // 숫자만 입력 가능
+                controller: _heightController,
+                validator: (value) {
+                  if(value.trim().isEmpty) { // 입력한 값의 앞뒤를 제거한 것이 비어있다면
+                    return '키를 입력하세요';
+                  }
+                  return null;
+                },
               ),
               SizedBox(
                 height: 16.0,
@@ -37,6 +48,13 @@ class _BmiMainState extends State<BmiMain> {
                   hintText: '몸무게',
                 ),
                 keyboardType: TextInputType.number,
+                controller: _weightController,
+                validator: (value) {
+                  if(value.trim().isEmpty) {
+                    return '체중을 입력하세요';
+                  }
+                  return null;
+                },
               ),
               Container(
                 margin: const EdgeInsets.only(top: 16.0),
@@ -46,7 +64,16 @@ class _BmiMainState extends State<BmiMain> {
                   onPressed: () {
                     // 폼에 입력된 값 검증
                     if(_formKey.currentState.validate()) {
-                      // 검증시 처리
+                      // 키와 몸무게 값이 검증되었으면
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BmiResult(
+                            double.parse(_heightController.text.trim()),
+                            double.parse(_weightController.text.trim()),
+                          ),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -56,5 +83,14 @@ class _BmiMainState extends State<BmiMain> {
         ),
       ),
     );
+
+
+  }
+
+  @override
+  void dispose() {
+    _heightController.dispose();
+    _weightController.dispose();
+    super.dispose();
   }
 }
